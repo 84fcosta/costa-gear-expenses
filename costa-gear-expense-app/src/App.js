@@ -250,6 +250,9 @@ function TopHeader({ year, setYear, view, setView }) {
     <>
       <header className="top-header">
         <div className="header-content">
+          <div className="logo-box">
+            <img src="/costa-gear-logo.png" alt="Costa Gear Off-Road Accessories" />
+          </div>
           <div className="header-controls">
             <div className="select-wrap">
               <Calendar size={20} />
@@ -267,9 +270,6 @@ function TopHeader({ year, setYear, view, setView }) {
               </select>
               <ChevronDown size={18} />
             </div>
-          </div>
-          <div className="logo-box">
-            <img src="/costa-gear-logo.png" alt="Costa Gear Off-Road Accessories" />
           </div>
         </div>
       </header>
