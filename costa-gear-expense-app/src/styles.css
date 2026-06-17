@@ -97,8 +97,8 @@ a { color: inherit; }
   flex: 0 0 auto;
 }
 .logo-box img {
-  max-width: 190px;
-  width: 190px;
+  max-width: 200px;
+  width: 200px;
   height: auto;
   object-fit: contain;
   display: block;
