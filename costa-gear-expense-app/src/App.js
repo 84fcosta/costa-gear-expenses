@@ -3,9 +3,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "./supabase";
 import * as XLSX from "xlsx";
 import {
-  BarChart3, BriefcaseBusiness, Calendar, ChevronDown, CircleHelp, ClipboardList,
-  Download, FileSpreadsheet, FolderKanban, Gauge, LayoutDashboard, PlusCircle,
-  ReceiptText, Search, ShieldCheck, Trash2, Upload, WalletCards, X, Edit3
+  BarChart3, BriefcaseBusiness, Calendar, ChevronDown, ClipboardList,
+  Download, FileSpreadsheet, Gauge, LayoutDashboard, PlusCircle,
+  ReceiptText, Trash2, Upload, WalletCards, X, Edit3
 } from "lucide-react";
 
 const CATEGORIES = [
@@ -267,10 +267,6 @@ function TopHeader({ year, setYear, view, setView }) {
               </select>
               <ChevronDown size={18} />
             </div>
-            <button className="utility" title="Search"><Search size={21} /></button>
-            <button className="utility" title="Tax readiness"><ShieldCheck size={21} /><span className="badge">✓</span></button>
-            <button className="utility" title="Help"><CircleHelp size={21} /></button>
-            <button className="avatar"><span className="avatar-initials">FC</span><ChevronDown size={18} /></button>
           </div>
           <div className="logo-box">
             <img src="/costa-gear-logo.png" alt="Costa Gear Off-Road Accessories" />
