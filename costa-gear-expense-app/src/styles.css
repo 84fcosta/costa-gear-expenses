@@ -50,14 +50,13 @@ a {
 }
 
 .top-header {
-  min-height: 110px;
-  padding: 14px 0;
+  min-height: 125px;
+  padding: 18px 0;
   position: relative;
   border-bottom: 1px solid rgba(132, 139, 55, 0.18);
   background:
     linear-gradient(180deg, rgba(10, 11, 10, 0.88), rgba(9, 10, 9, 0.95)),
     repeating-radial-gradient(ellipse at center, rgba(255, 255, 255, 0.045) 0 1px, transparent 1px 16px);
-  overflow: hidden;
 }
 
 .header-content {
@@ -120,8 +119,8 @@ a {
 }
 
 .logo-box img {
-  max-width: 200px;
-  width: 200px;
+  max-width: 190px;
+  width: 190px;
   height: auto;
   object-fit: contain;
   display: block;
@@ -437,8 +436,15 @@ tr:hover td {
 
 .two-col {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: minmax(0, 1fr) 340px;
   gap: 18px;
+  width: 100%;
+  align-items: stretch;
+}
+
+.two-col > .card {
+  min-width: 0;
+  width: 100%;
 }
 
 .notice {
