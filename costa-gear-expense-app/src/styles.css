@@ -201,7 +201,7 @@ a {
 
 .grid-cards {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   margin-bottom: 18px;
 }
@@ -436,7 +436,7 @@ tr:hover td {
 
 .two-col {
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   width: 100%;
   align-items: stretch;
@@ -445,6 +445,14 @@ tr:hover td {
 .two-col > .card {
   min-width: 0;
   width: 100%;
+}
+
+.two-col > .card:first-child {
+  grid-column: 1 / span 3;
+}
+
+.two-col > .card:last-child {
+  grid-column: 4 / span 1;
 }
 
 .two-col .card:last-child .btn.primary {
@@ -538,6 +546,11 @@ tr:hover td {
 
   .two-col {
     grid-template-columns: 1fr;
+  }
+
+  .two-col > .card:first-child,
+  .two-col > .card:last-child {
+    grid-column: 1 / -1;
   }
 
   .filters {
