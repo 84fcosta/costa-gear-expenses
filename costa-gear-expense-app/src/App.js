@@ -307,7 +307,7 @@ function ExpenseForm({ initial, onSubmit, onCancel, assets }) {
   const deductible = calcDeductible(form.total_amount, form.business_use_pct);
 
   return (
-    <form onSubmit={e => { e.preventDefault(); onSubmit({ ...form }); }}>
+    <form onSubmit={e => { e.preventDefault(); onSubmit({ ...form, deductible_amount: deductible }); }}>
       <div className="form-grid">
         <div>
           <label>Date</label>
@@ -415,7 +415,7 @@ function AssetForm({ initial, onSubmit, onCancel, expenses }) {
   const cca = calcEstimatedCca(form);
 
   return (
-    <form onSubmit={e => { e.preventDefault(); onSubmit({ ...form }); }}>
+    <form onSubmit={e => { e.preventDefault(); onSubmit({ ...form, business_cost: businessCost, estimated_cca_claim: cca }); }}>
       <div className="form-grid">
         <div>
           <label>Asset ID</label>
@@ -558,7 +558,11 @@ function Dashboard({ expenses, assets, year, setView, onExportTax }) {
                     <td>{e.description}</td>
                     <td><span className={`tag ${e.is_asset_purchase ? "asset" : ""}`}>{e.category}</span></td>
                     <td className="amount">{money(e.total_amount)}</td>
-                    <td><span className={`tag ${e.receipt_status === "Saved" ? "ok" : "warn"}`}>{e.receipt_status}</span></td>
+                    <td>
+                      {e.receipt_url ? (
+                        <a className="tag ok" href={e.receipt_url} target="_blank" rel="noreferrer">Link</a>
+                      ) : null}
+                    </td>
                   </tr>
                 ))}
                 {!expenses.length && <tr><td colSpan="6"><div className="empty">No expenses yet.</div></td></tr>}
@@ -654,7 +658,11 @@ function ExpensesView({ expenses, assets, year, onAdd, onEdit, onDelete, onExpor
                   <td>{pct(e.business_use_pct)}</td>
                   <td className="amount">{money(calcDeductible(e.total_amount, e.business_use_pct))}</td>
                   <td>{e.payment_method}<div className="muted">{e.payment_reference}</div></td>
-                  <td><span className={`tag ${e.receipt_status === "Saved" ? "ok" : "warn"}`}>{e.receipt_status}</span></td>
+                  <td>
+                      {e.receipt_url ? (
+                        <a className="tag ok" href={e.receipt_url} target="_blank" rel="noreferrer">Link</a>
+                      ) : null}
+                    </td>
                   <td>
                     <div className="toolbar">
                       <button className="btn small" onClick={() => onEdit(e)}><Edit3 size={15} />Edit</button>
@@ -832,6 +840,7 @@ export default function App() {
       category: payload.category,
       total_amount: Number(payload.total_amount || 0),
       business_use_pct: Number(payload.business_use_pct || 0),
+      deductible_amount: calcDeductible(payload.total_amount, payload.business_use_pct),
       payment_method: payload.payment_method,
       payment_reference: payload.payment_reference,
       receipt_url: payload.receipt_url,
@@ -870,6 +879,8 @@ export default function App() {
       cca_class: payload.cca_class,
       cca_rate: Number(payload.cca_rate || 0),
       business_use_pct: Number(payload.business_use_pct || 0),
+      business_cost: calcBusinessCost(payload.cost, payload.business_use_pct),
+      estimated_cca_claim: calcEstimatedCca(payload),
       receipt_url: payload.receipt_url,
       notes: payload.notes,
       tax_year: Number(payload.tax_year || year),
