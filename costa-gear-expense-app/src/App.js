@@ -307,7 +307,7 @@ function ExpenseForm({ initial, onSubmit, onCancel, assets }) {
   const deductible = calcDeductible(form.total_amount, form.business_use_pct);
 
   return (
-    <form onSubmit={e => { e.preventDefault(); onSubmit({ ...form, deductible_amount: deductible }); }}>
+    <form onSubmit={e => { e.preventDefault(); onSubmit({ ...form }); }}>
       <div className="form-grid">
         <div>
           <label>Date</label>
@@ -415,7 +415,7 @@ function AssetForm({ initial, onSubmit, onCancel, expenses }) {
   const cca = calcEstimatedCca(form);
 
   return (
-    <form onSubmit={e => { e.preventDefault(); onSubmit({ ...form, business_cost: businessCost, estimated_cca_claim: cca }); }}>
+    <form onSubmit={e => { e.preventDefault(); onSubmit({ ...form }); }}>
       <div className="form-grid">
         <div>
           <label>Asset ID</label>
@@ -840,7 +840,6 @@ export default function App() {
       category: payload.category,
       total_amount: Number(payload.total_amount || 0),
       business_use_pct: Number(payload.business_use_pct || 0),
-      deductible_amount: calcDeductible(payload.total_amount, payload.business_use_pct),
       payment_method: payload.payment_method,
       payment_reference: payload.payment_reference,
       receipt_url: payload.receipt_url,
@@ -879,8 +878,6 @@ export default function App() {
       cca_class: payload.cca_class,
       cca_rate: Number(payload.cca_rate || 0),
       business_use_pct: Number(payload.business_use_pct || 0),
-      business_cost: calcBusinessCost(payload.cost, payload.business_use_pct),
-      estimated_cca_claim: calcEstimatedCca(payload),
       receipt_url: payload.receipt_url,
       notes: payload.notes,
       tax_year: Number(payload.tax_year || year),
