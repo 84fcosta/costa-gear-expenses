@@ -109,11 +109,12 @@ function downloadWorkbook(wb, filename) {
 function normalizeExpense(row) {
   const total = Number(row.total_amount || 0);
   const businessPct = Number(row.business_use_pct || 0);
+  const rest = { ...row };
+  delete rest.deductible_amount;
   return {
-    ...row,
+    ...rest,
     total_amount: total,
-    business_use_pct: businessPct,
-    deductible_amount: calcDeductible(total, businessPct)
+    business_use_pct: businessPct
   };
 }
 
@@ -833,26 +834,30 @@ export default function App() {
   useEffect(() => { loadData(); }, [loadData]);
 
   async function saveExpense(payload) {
+    const safePayload = { ...payload };
+    delete safePayload.deductible_amount;
+    delete safePayload.business_cost;
+    delete safePayload.estimated_cca_claim;
     const clean = {
-      expense_date: payload.expense_date,
-      vendor: payload.vendor,
-      description: payload.description,
-      category: payload.category,
-      total_amount: Number(payload.total_amount || 0),
-      business_use_pct: Number(payload.business_use_pct || 0),
-      payment_method: payload.payment_method,
-      payment_reference: payload.payment_reference,
-      receipt_url: payload.receipt_url,
-      receipt_status: payload.receipt_status,
-      notes: payload.notes,
-      tax_year: Number(payload.tax_year || year),
-      is_asset_purchase: Boolean(payload.is_asset_purchase),
-      linked_asset_id: payload.linked_asset_id || null,
-      tax_ready: Boolean(payload.tax_ready)
+      expense_date: safePayload.expense_date,
+      vendor: safePayload.vendor,
+      description: safePayload.description,
+      category: safePayload.category,
+      total_amount: Number(safePayload.total_amount || 0),
+      business_use_pct: Number(safePayload.business_use_pct || 0),
+      payment_method: safePayload.payment_method,
+      payment_reference: safePayload.payment_reference,
+      receipt_url: safePayload.receipt_url,
+      receipt_status: safePayload.receipt_status,
+      notes: safePayload.notes,
+      tax_year: Number(safePayload.tax_year || year),
+      is_asset_purchase: Boolean(safePayload.is_asset_purchase),
+      linked_asset_id: safePayload.linked_asset_id || null,
+      tax_ready: Boolean(safePayload.tax_ready)
     };
 
-    const result = payload.id
-      ? await supabase.from("expenses").update(clean).eq("id", payload.id)
+    const result = safePayload.id
+      ? await supabase.from("expenses").update(clean).eq("id", safePayload.id)
       : await supabase.from("expenses").insert(clean);
 
     if (result.error) return alert(result.error.message);
